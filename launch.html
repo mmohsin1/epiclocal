@@ -33,7 +33,8 @@
 	<script>
 		FHIR.oauth2.authorize({
       'client_id': 'cab41572-4d78-4b91-9149-7fb6789beea2',
-      'scope':  'PATIENT.READ PATIENT.SEARCH OBSERVATION.READ OBSERVATION.SEARCH',
+      //'scope':  'PATIENT.READ PATIENT.SEARCH OBSERVATION.READ OBSERVATION.SEARCH',
+			'scope': 'user/Patient.read user/Patient.search user/observation.read user/observation.search fhirUser launch launch/encounter launch/patient launch/observation openid',
       'redirect_uri': 'https://mmohsin1.github.io/epicpatientapp/app'
     });
 	</script>
