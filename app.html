@@ -21,8 +21,9 @@
 
     FHIR.oauth2.ready()
     .then(function(client){ 
-      myApp.smart = client
-      doRequests()
+      myApp.smart = client;
+	    console.log('authorization accesstoken',myApp.smart.state.tokenResponse.access_token);
+      doRequests();
     })
 
     async function doRequests(){
