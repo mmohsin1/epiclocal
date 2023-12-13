@@ -24,6 +24,8 @@
       myApp.smart = client;
 	    console.log('authorization accesstoken',myApp.smart.state.tokenResponse.access_token);
 	    console.log('paientId',myApp.smart.patient.id);
+	    console.log('paient',myApp.smart.patient);
+	    console.log('serverURL',myApp.smart.state.serverUrl);
       doRequests();
     })
 
