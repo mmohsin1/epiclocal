@@ -23,6 +23,7 @@
     .then(function(client){ 
       myApp.smart = client;
 	    console.log('authorization accesstoken',myApp.smart.state.tokenResponse.access_token);
+	    console.log('paientId',myApp.smart.patient.id);
       doRequests();
     })
 
