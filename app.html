@@ -25,7 +25,7 @@ var requestOptions = {
 "grant_type=authorization_code"+
 "&code="+code+
 "&redirect_uri="+encodeURI("https://mmohsin1.github.io/epic/app")+
-"&client_id="+client_id,
+"&client_id="+clientId,
  requestOptions)
   .then(response => response.text())
   .then(result => console.log('result',result))
