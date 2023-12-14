@@ -41,20 +41,22 @@
     const clientId="b2774854-9deb-4b01-8e33-2f82a52a9cf0&";
     //step 1: authorize
     var myHeaders = new Headers();
- 
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
 var requestOptions = {
   method: 'GET',
-  headers: myHeaders,
-  redirect: 'follow'
+  headers: myHeaders
 };
 console.log('launch',launch);
 console.log('iss',iss);
 fetch(authorization_endpoint+"?"+
-"response_type=code&client_id="+clientId+
+"response_type=code"+
+"&client_id="+clientId+
 "&redirect_uri="+encodeURI("https://mmohsin1.github.io/epic/app")+
-"&scope=launch&launch="+launch+
+"&scope=launch"+
+"&launch="+launch+
 "&aud="+iss+
-"&state=e6a73986-9a95-11ee-b9d1-0242ac120002",
+"&state=e6a73986-9a95-11ee-b9d1-0242ac12",
  requestOptions)
   .then(response => response.text())
   .then(result => console.log(result))

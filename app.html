@@ -3,97 +3,22 @@
 
 <head>
 
-	<script src='https://mmohsin1.github.io/epicpatientapp/dist/fhir-client-v2.js'></script>
+	<script src='https://mmohsin1.github.io/epic/dist/fhir-client-v2.js'></script>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-  <style>
-    #main{background:lightgray; margin:1em; padding:1em;font-size:2em;}
-  </style>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+       console.log('code:',code);
+       console.log('state:',state);
+      </script>
+  
 </head>
 
 <body>
 <h5>Patient Detail</h5>
-	  <div id="patientdetails">
-		Name: <span id="name"></span><br/>
-		BirthDate: <span id="birthdate"></span>
-	  </div>
-	<hr/>
-	<h5 style="display:none;">Observation</h5>
-  <div id="main" style="display:none;"></div>
-
-	<script>
-
-		var myApp = {}
-
-    FHIR.oauth2.ready()
-    .then(function(client){ 
-      myApp.smart = client;
-	    console.log('authorization accesstoken',myApp.smart.state.tokenResponse.access_token);
-	    console.log('paientId',myApp.smart.patient.id);
-	    console.log('paient',myApp.smart.patient);
-	    console.log('serverURL',myApp.smart.state.serverUrl);
-      doRequests();
-	    doRequestForPatient();
-    })
-//doRequests
-    async function doRequests(){
-
-      var loincs = [ encodeURIComponent("http://loinc.org|4548-4") ] //4548-4 = HgA1C  //4544-3 = hematocrit
-      var obs = await fetch(myApp.smart.state.serverUrl+"/Observation?patient="+myApp.smart.patient.id+"&limit=50&code="+loincs.join(","),{
-        headers:{  
-          "Accept":"application/json+fhir",
-          "Authorization":"Bearer "+myApp.smart.state.tokenResponse.access_token
-        }
-        }).then(function(data){
-          return data;
-      })
-
-      var response = await obs.json();
-
-      console.log(response);
-
-      var toInsert = ""
-
-//if there is no entry, then there was no test found
-      if (!response.entry[0]){
-
-        toInsert += "We could not find you were tested for HgA1C at this provider.";
-
-      }else{
-        
-        toInsert += "Your HgA1C was tested on "+response.entry[0].resource.effectiveDateTime+"<br/><br/>";
-
-        toInsert += "Your HgA1C was "+response.entry[0].resource.valueQuantity.value+"<br/><br/>";
-
-        toInsert += "<a href='https://en.wikipedia.org/wiki/Glycated_hemoglobin'>According to wikipedia</a>, A1c is measured primarily to determine the three-month average blood sugar level and can be used as a diagnostic test for diabetes mellitus.  <5.7%	Normal, 5.7-6.4%	Prediabetes, >6.5%	Diabetes."
-      }
-
-      $("#main").html(toInsert)
-
-    }//
-
-		//doRequestForPatient
-    async function doRequestForPatient(){
-
-      
-      var obs = await fetch(myApp.smart.state.serverUrl+"/Patient/"+myApp.smart.patient.id,{
-        headers:{  
-          "Accept":"application/json+fhir",
-          "Authorization":"Bearer "+myApp.smart.state.tokenResponse.access_token
-        }
-        }).then(function(data){
-	      console.log('Patient API 1:',data);
-          return data;
-      })
-
-      var response = await obs.json();
-      console.log('response @ Patient API:',response);
-	    $("#name").html(response.name[0].text);
-	     $("#birthdate").html(response.birthDate);
-	    
-    }//
-		
-	</script>
+	   
+	
 
 </body>
 
