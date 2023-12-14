@@ -2,7 +2,7 @@
 <html> 
 <head>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://mmohsin1.github.io/epicpatientapp/dist/fhir-client-v2.js">
+	<script src="https://mmohsin1.github.io/epic/dist/fhir-client-v2.js">
 		 
 	</script>
 </head>
@@ -31,12 +31,34 @@
 	<h1 class="container">Authorizing Request....</h1>
 
 	<script>
-		FHIR.oauth2.authorize({
-      'client_id': 'cab41572-4d78-4b91-9149-7fb6789beea2',
-      'scope':  'PATIENT.READ PATIENT.SEARCH OBSERVATION.READ OBSERVATION.SEARCH launch openid fhiruser profile',
-//'scope': 'user/Patient.read user/Patient.search user/observation.read user/observation.search fhirUser launch launch/encounter launch/patient launch/observation openid',
-      'redirect_uri': 'https://mmohsin1.github.io/epicpatientapp/app'
-    });
+		//get launch code and iss
+    const urlParams = new URLSearchParams(window.location.search);
+    const launch = urlParams.get('launch');
+    const iss = urlParams.get('iss');
+    const metadata="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/DSTU2/metadata";
+    const authorization_endpoint="https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize";
+    const token_endpoint="https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token";
+
+    //step 1: authorize
+    var myHeaders = new Headers();
+ 
+var requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  redirect: 'follow'
+};
+
+fetch("https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize?"+
+"response_type=code&client_id=b2774854-9deb-4b01-8e33-2f82a52a9cf0&"+
+"redirect_uri="+encodeURI("https://mmohsin1.github.io/epic/app")+
+"&scope=launch&launch="+launch+
+"&"+
+"state=palmira14122023", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+
+
 	</script>
 
 </body>
