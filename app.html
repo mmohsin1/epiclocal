@@ -3,46 +3,80 @@
 
 <head>
 
-	<script src='https://mmohsin1.github.io/epic/dist/fhir-client-v2.js'></script>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src='https://mmohsin1.github.io/epic/dist/fhir-client-v2.js'></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script>
+    const token_endpoint = "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token";
+    const endpoint = "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/DSTU2";
+
     const urlParams = new URLSearchParams(window.location.search);
-    const token_endpoint="https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token";
-        const code = urlParams.get('code');
-        const state = urlParams.get('state');
-       console.log('code:',code);
-       console.log('state:',state);
-       const clientId="b2774854-9deb-4b01-8e33-2f82a52a9cf0";
-       var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    const code = urlParams.get('code');
+    const state = urlParams.get('state');
+    console.log('code:', code);
+    console.log('state:', state);
+    const clientId = "b2774854-9deb-4b01-8e33-2f82a52a9cf0";
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-var urlencoded = new URLSearchParams();
-urlencoded.append("grant_type", "authorization_code");
-urlencoded.append("code", code);
-urlencoded.append("redirect_uri", "https://mmohsin1.github.io/epic/app");
-urlencoded.append("client_id", clientId);
-
-
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: urlencoded,
-};
-
-       fetch(token_endpoint,requestOptions)
-  .then(response => response.text())
-  .then(result => console.log('result',result))
-  .catch(error => console.log('error', error));
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("grant_type", "authorization_code");
+    urlencoded.append("code", code);
+    urlencoded.append("redirect_uri", "https://mmohsin1.github.io/epic/app");
+    urlencoded.append("client_id", clientId);
 
 
-      </script>
-  
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: urlencoded,
+    };
+
+    fetch(token_endpoint, requestOptions)
+      .then(response => response.json())
+      .then(data => callback(data))
+      .catch(error => console.log('error', error));
+
+
+    const callback = (data) => {
+      console.log('access_token', data.access_token);
+      console.log('token_type', data.token_type);
+      console.log('expires_in', data.expires_in);
+      console.log('patientID', data.patient);
+      doRequestForPatient(data.access_token, data.patient);
+    }
+
+    //doRequestForPatient
+    async function doRequestForPatient(access_token, patientId) {
+
+
+      var obs = await fetch(endpoint + "/Patient/" + patientId, {
+        headers: {
+          "Accept": "application/json+fhir",
+          "Authorization": "Bearer " + access_token
+        }
+      }).then(function (data) {
+        console.log('Patient API 1:', data);
+        return data;
+      })
+
+      var response = await obs.json();
+      console.log('response @ Patient API:', response);
+      $("#name").html(response.name[0].text);
+      $("#birthdate").html(response.birthDate);
+
+    }//
+
+  </script>
+
 </head>
 
 <body>
-<h5>Patient Detail</h5>
-	   
-	
+  <h5>Patient Detail</h5>
+  <div id="patientdetails">
+    Name: <span id="name"></span><br />
+    BirthDate: <span id="birthdate"></span>
+  </div>
+
 
 </body>
 
