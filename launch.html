@@ -38,7 +38,7 @@
     const metadata="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/DSTU2/metadata";
     const authorization_endpoint="https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize";
     const token_endpoint="https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token";
-    const clientId="b2774854-9deb-4b01-8e33-2f82a52a9cf0&";
+    const clientId="b2774854-9deb-4b01-8e33-2f82a52a9cf0";
     //step 1: authorize
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -56,7 +56,7 @@ fetch(authorization_endpoint+"?"+
 "&scope=launch"+
 "&launch="+launch+
 "&aud="+iss+
-"&state=e6a73986-9a95-11ee-b9d1-0242ac12",
+"&state=e6a73986-9a95-11ee-b9d1-0242ac1112",
  requestOptions)
   .then(response => response.text())
   .then(result => console.log(result))
