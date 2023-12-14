@@ -16,17 +16,20 @@
        var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
+var urlencoded = new URLSearchParams();
+urlencoded.append("grant_type", "authorization_code");
+urlencoded.append("code", code);
+urlencoded.append("redirect_uri", "https://mmohsin1.github.io/epic/app");
+urlencoded.append("client_id", clientId);
+
+
 var requestOptions = {
   method: 'POST',
-  headers: myHeaders
+  headers: myHeaders,
+  body: urlencoded,
 };
 
-       fetch(token_endpoint+"?"+
-"grant_type=authorization_code"+
-"&code="+code+
-"&redirect_uri="+encodeURI("https://mmohsin1.github.io/epic/app")+
-"&client_id="+clientId,
- requestOptions)
+       fetch(token_endpoint,requestOptions)
   .then(response => response.text())
   .then(result => console.log('result',result))
   .catch(error => console.log('error', error));
