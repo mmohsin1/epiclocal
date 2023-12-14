@@ -45,25 +45,25 @@
           "Authorization":"Bearer "+myApp.smart.state.tokenResponse.access_token
         }
         }).then(function(data){
-          return data
+          return data;
       })
 
-      var response = await obs.json()
+      var response = await obs.json();
 
-      console.log(response)
+      console.log(response);
 
       var toInsert = ""
 
 //if there is no entry, then there was no test found
       if (!response.entry[0]){
 
-        toInsert += "We could not find you were tested for HgA1C at this provider."
+        toInsert += "We could not find you were tested for HgA1C at this provider.";
 
       }else{
         
-        toInsert += "Your HgA1C was tested on "+response.entry[0].resource.effectiveDateTime+"<br/><br/>"
+        toInsert += "Your HgA1C was tested on "+response.entry[0].resource.effectiveDateTime+"<br/><br/>";
 
-        toInsert += "Your HgA1C was "+response.entry[0].resource.valueQuantity.value+"<br/><br/>"
+        toInsert += "Your HgA1C was "+response.entry[0].resource.valueQuantity.value+"<br/><br/>";
 
         toInsert += "<a href='https://en.wikipedia.org/wiki/Glycated_hemoglobin'>According to wikipedia</a>, A1c is measured primarily to determine the three-month average blood sugar level and can be used as a diagnostic test for diabetes mellitus.  <5.7%	Normal, 5.7-6.4%	Prediabetes, >6.5%	Diabetes."
       }
@@ -82,11 +82,11 @@
           "Authorization":"Bearer "+myApp.smart.state.tokenResponse.access_token
         }
         }).then(function(data){
-	      console.log('Patient API:',data);
-          return data
+	      console.log('Patient API 1:',data);
+          return data;
       })
 
-      var response = await obs.json()
+      var response = await obs.json();
       console.log('response @ Patient API:',response);
 	    $("#name").html(response.name[0].text);
 	     $("#birthdate").html(response.birthDate);
