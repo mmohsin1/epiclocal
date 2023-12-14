@@ -59,7 +59,7 @@ fetch(authorization_endpoint+"?"+
 "&state=e6a73986-9a95-11ee-b9d1-0242ac1112",
  requestOptions)
   .then(response => response.text())
-  .then(result => console.log(result))
+  .then(result => console.log('result',result))
   .catch(error => console.log('error', error));
 
 
