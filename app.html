@@ -27,8 +27,9 @@
 	    console.log('paient',myApp.smart.patient);
 	    console.log('serverURL',myApp.smart.state.serverUrl);
       doRequests();
+	    doRequestForPatient();
     })
-
+//doRequests
     async function doRequests(){
 
       var loincs = [ encodeURIComponent("http://loinc.org|4548-4") ] //4548-4 = HgA1C  //4544-3 = hematocrit
@@ -63,7 +64,26 @@
 
       $("#main").html(toInsert)
 
-    }
+    }//
+
+		//doRequestForPatient
+    async function doRequestForPatient(){
+
+      
+      var obs = await fetch(myApp.smart.state.serverUrl+"/Patient/"+myApp.smart.patient.id,{
+        headers:{  
+          "Accept":"application/json+fhir",
+          "Authorization":"Bearer "+myApp.smart.state.tokenResponse.access_token
+        }
+        }).then(function(data){
+	      console.log('Patient API:',data);
+          return data
+      })
+
+      var response = await obs.json()
+      console.log('response @ Patient API:',response)
+    }//
+		
 	</script>
 
 </body>
