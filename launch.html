@@ -49,18 +49,17 @@ var requestOptions = {
 };
 console.log('launch',launch);
 console.log('iss',iss);
-fetch(authorization_endpoint+"?"+
-"response_type=code"+
-"&client_id="+clientId+
-"&redirect_uri="+encodeURI("https://mmohsin1.github.io/epic/app")+
-"&scope=launch"+
-"&launch="+launch+
-"&aud="+iss+
-"&state=e6a73986-9a95-11ee-b9d1-0242acA1",
- requestOptions)
-  .then(response => response.text())
-  .then(result => console.log('result',result))
-  .catch(error => console.log('error', error));
+
+FHIR.oauth2.authorize({
+  'response_type':'code',
+'client_id': clientId,
+'redirect_uri': encodeURI("https://mmohsin1.github.io/epic/app"),
+'scope':'launch',
+'launch':launch,
+'aud':iss,
+'state':'e6a73986-9a95-11ee-b9d1-0242acA2'
+});
+ 
 
 
 	</script>
