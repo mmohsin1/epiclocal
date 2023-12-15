@@ -84,7 +84,7 @@
 
       var response = await obs.json();
       console.log('response @ Coverage API:', response);
-      $("#expirydate").html(response.period.start); 
+      $("#expirydate").html(response.period ? response.period.start : "-"); 
 
     }//coverage
   </script>
@@ -95,8 +95,8 @@
   <h5>Patient Detail</h5>
   <div id="patientdetails">
     Name: <span id="name"></span><br />
-    BirthDate: <span id="birthdate"></span>
-    Health Card Number: <span id="healthCardNumber"></span>
+    BirthDate: <span id="birthdate"></span><br />
+    Health Card Number: <span id="healthCardNumber"></span><br />
      Expiry Date: <span id="expirydate"></span>
   </div>
  
