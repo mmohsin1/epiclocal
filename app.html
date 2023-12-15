@@ -44,6 +44,7 @@
       console.log('expires_in', data.expires_in);
       console.log('patientID', data.patient);
       doRequestForPatient(data.access_token, data.patient);
+      doRequestForPatientCoverage(data.access_token, data.patient);
     }
 
     //doRequestForPatient
@@ -64,9 +65,28 @@
       console.log('response @ Patient API:', response);
       $("#name").html(response.name[0].text);
       $("#birthdate").html(response.birthDate);
-
+    $("#healthCardNumber").html(response.identifier[0].value);
     }//
 
+    //doRequestForPatientCoverage
+    async function doRequestForPatientCoverage(access_token, patientId) {
+
+
+      var obs = await fetch(endpoint + "/Coverage?patient=" + patientId, {
+        headers: {
+          "Accept": "application/json+fhir",
+          "Authorization": "Bearer " + access_token
+        }
+      }).then(function (data) {
+        console.log('Coverage API :', data);
+        return data;
+      })
+
+      var response = await obs.json();
+      console.log('response @ Coverage API:', response);
+      $("#expirydate").html(response.period.start); 
+
+    }//coverage
   </script>
 
 </head>
@@ -76,8 +96,12 @@
   <div id="patientdetails">
     Name: <span id="name"></span><br />
     BirthDate: <span id="birthdate"></span>
+    Health Card Number: <span id="healthCardNumber"></span>
+     Expiry Date: <span id="expirydate"></span>
   </div>
-
+ 
+   
+  
 
 </body>
 
