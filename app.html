@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-
-  <script src='https://mmohsin1.github.io/epic/dist/fhir-client-v2.js'></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script>
+<script type="" src="https://mmohsin1.github.io/epic/dist/fhir-client-v2.js"></script>
+  <script type="" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script type="">
     const token_endpoint = "https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token";
     const endpoint = "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4";
 
@@ -44,7 +39,7 @@
       console.log('expires_in', data.expires_in);
       console.log('patientID', data.patient);
       doRequestForPatient(data.access_token, data.patient);
-      doRequestForPatientCoverage(data.access_token, data.patient);
+	  doRequestForPatientCoverage(data.access_token, data.patient);
     }
 
     //doRequestForPatient
@@ -63,12 +58,21 @@
 
       var response = await obs.json();
       console.log('response @ Patient API:', response);
-      $("#name").html(response.name[0].text);
-      $("#birthdate").html(response.birthDate);
-    $("#healthCardNumber").html(response.identifier[0].value);
+      $(".patient-name").html(response.name[0].text);
+      $("#birthDate").html(response.birthDate);
+		$("#patientId").html(response.id);
+		$("#healthcard-number").html(response.identifier[0].value);
+		const getAge = birthDate => Math.floor((new Date() - new Date(birthDate).getTime()) / 3.15576e+10)
+		$(".age").html(getAge(response.birthDate));
+		const price = (getAge(response.birthDate) && getAge(response.birthDate)>0 ? 
+		(getAge(response.birthDate) <10 ? "25 AED" : 
+		(getAge(response.birthDate) <18 ? "70 AED" : 
+		(getAge(response.birthDate) >=18) : "120 AED")
+		) : "120 AED");
+		$("#price").html(price);
     }//
 
-    //doRequestForPatientCoverage
+ //doRequestForPatientCoverage
     async function doRequestForPatientCoverage(access_token, patientId) {
 
 
@@ -87,22 +91,149 @@
       $("#expirydate").html(response.period ? response.period.start : "-"); 
 
     }//coverage
+	
   </script>
 
-</head>
-
-<body>
-  <h5>Patient Detail</h5>
-  <div id="patientdetails">
-    Name: <span id="name"></span><br />
-    BirthDate: <span id="birthdate"></span><br />
-    Health Card Number: <span id="healthCardNumber" class="d-none"></span><br />
-     Expiry Date: <span id="expirydate"></span>
-  </div>
  
-   
+   <!-- html -->
+<div class="card" id="card-1">
+ <div class="card-header primary-title fs30-800">Patient Information</div>
+  <div class="card-body">
   
+   <div class="row d-none">
+	    <div class="col-xs-6 col-sm-4 col-md-4">
+			<label class="font-weight-bold form-label">Health Number: </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p class="description fs16-500" id="healthcard-number">loading...</p>
+		</div>
+    </div>
+    <div class="row">
+	    <div class="col-xs-6 col-sm-4 col-md-4">
+			<label class="font-weight-bold form-label">Citizen: </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p class="description fs16-500">UAE</p>
+		</div>
+    </div>
+    <div class="row">
+	    <div class="col-xs-6 col-sm-4 col-md-4">
+			<label class="font-weight-bold form-label">Patient Name: </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p class="description fs16-500 patient-name" id="patient-name">loading...</p>
+		</div>
+    </div>
+    <div class="row">
+	    <div class="col-xs-6 col-sm-4 col-md-4">
+			<label class="font-weight-bold form-label">Patient Id: </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p class="description fs16-500" id="patientId">loading...</p>
+		</div>
+    </div>
+  
+    <div class="row">
+	    <div class="col-xs-6 col-sm-4 col-md-4">
+			<label class="font-weight-bold form-label">DOB: </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p class="description fs16-500" id="birthDate">loading...</p>
+		</div>
+    </div>
+    <div class="row">
+	    <div class="col-xs-6 col-sm-4 col-md-4">
+			<label class="font-weight-bold form-label">Age: </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p class="description fs16-500 age" id="age">loading...</p>
+		</div>
+    </div>
+	<hr>
+	 
+	  <div class="row">
+	    <div class="col-xs-6 col-sm-4 col-md-4">
+			<label class="font-weight-bold form-label">Expiry Date: </label>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-4">
+			<p class="description fs16-500" id="expiryDate">loading...</p>
+		</div>
+    </div>
+    <div class="row">
+    	<div class="col-xs-6 col-sm-4 col-md-4">
+		</div>
+	  	<div class="col-xs-6 col-sm-4 col-md-4">
+	  		<a href="javascript:toggleCards();" class="btn btn-primary btn-lg">Renew</a>
+	  	</div>
+	 </div>
+    
+  </div>
+</div>
 
-</body>
-
-</html>
+<!-- 2nd page -->
+<div class="card" id="card-2" style="display:none;">
+<a href="javascript:toggleCards();">&lt; Back</a>
+ <div class="card-header primary-title fs30-800">Payment Information</div>
+  <div class="card-body">
+	   <div class="row">
+		    <div class="col-xs-6 col-sm-4 col-md-4">
+				<label class="font-weight-bold form-label">Patient Name: </label>
+			</div>
+			<div class="col-xs-6 col-sm-4 col-md-4">
+				<p class="description fs16-500 patient-name">loading...</p>
+			</div>
+	    </div>
+	    <div class="row">
+		    <div class="col-xs-6 col-sm-4 col-md-4">
+				<label class="font-weight-bold form-label">Age: </label>
+			</div>
+			<div class="col-xs-6 col-sm-4 col-md-4">
+				<p class="description fs16-500 age">loading...</p>
+			</div>
+    	</div>
+    	 <div class="row">
+		    <div class="col-xs-6 col-sm-4 col-md-4">
+				<label class="font-weight-bold form-label">Product: </label>
+			</div>
+			<div class="col-xs-6 col-sm-4 col-md-4">
+				<p class="description fs16-500">Health Card Renewal</p>
+			</div>
+    	</div>
+    	<div class="row">
+		    <div class="col-xs-6 col-sm-4 col-md-4">
+				<label class="font-weight-bold form-label">Price: </label>
+			</div>
+			<div class="col-xs-6 col-sm-4 col-md-4">
+				<p class="description fs16-500" id="price">loading...</p>
+			</div>
+    	</div>
+    	<div class="row">
+    		<div class="col-xs-6 col-sm-4 col-md-4">
+    			<p>Secure your coverage by completing the renewal process</p>
+    		</div>
+    	</div>
+    	<div class="row">
+	    	<div class="col-xs-6 col-sm-4 col-md-4">
+			</div>
+		  	<div class="col-xs-6 col-sm-4 col-md-4">
+				<a href="#" class="btn-primary btn-lg">Make Payment</a>
+			</div>
+		</div>
+  </div>
+</div>
+<!-- -->
+<script type="">
+const toggleCards=()=>{
+ 
+var card1 = document.getElementById("card-1");
+var card2 = document.getElementById("card-2");
+  if (card1.style.display === "none") {
+    card1.style.display = "block";
+	card2.style.display = "none";
+  } else {
+    card1.style.display = "none";
+	card2.style.display = "block";
+  }
+  
+};
+</script>
