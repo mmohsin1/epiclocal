@@ -43,6 +43,9 @@
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
  myHeaders.append("Access-Control-Allow-Origin", "https://servicesstg.dubaihealth.ae:8090");
+		myHeaders.append("Access-Control-Allow-Methods", "POST,GET");
+myHeaders.append("Access-Control-Allow-Headers","Content-Type, Authorization");
+		
 var requestOptions = {
   method: 'POST',
   headers: myHeaders
