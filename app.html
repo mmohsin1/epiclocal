@@ -39,7 +39,7 @@
       console.log('expires_in', data.expires_in);
       console.log('patientID', data.patient);
       doRequestForPatient(data.access_token, data.patient);
-	  doRequestForPatientCoverage(data.access_token, data.patient);
+	doRequestForPatientCoverage(data.access_token, data.patient);
     }
 
     //doRequestForPatient
@@ -66,9 +66,8 @@
 		$(".age").html(getAge(response.birthDate));
 		const price = (getAge(response.birthDate) && getAge(response.birthDate)>0 ? 
 		(getAge(response.birthDate) <10 ? "25 AED" : 
-		(getAge(response.birthDate) <18 ? "70 AED" : 
-		(getAge(response.birthDate) >=18) : "120 AED")
-		) : "120 AED");
+		(getAge(response.birthDate) <18 ? "70 AED" :  "120 AED"))
+		 : "120 AED");
 		$("#price").html(price);
     }//
 
