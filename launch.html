@@ -42,9 +42,7 @@
     //step 1: authorize
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
- myHeaders.append("Access-Control-Allow-Origin", "https://icinstancestg.dha.gov.ae");
-		myHeaders.append("Access-Control-Allow-Methods", "POST,GET");
-myHeaders.append("Access-Control-Allow-Headers","Content-Type, Authorization");
+ myHeaders.append("Access-Control-Allow-Origin", "*");
 		
 var requestOptions = {
   method: 'POST',
