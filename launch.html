@@ -2,7 +2,7 @@
 <html> 
 <head>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://mmohsin1.github.io/epic/dist/fhir-client-v2.js">
+	<script src="https://mmohsin1.github.io/epiclocal/dist/fhir-client-v2.js">
 		 
 	</script>
 </head>
@@ -32,13 +32,19 @@
 
 	<script>
 		//get launch code and iss
+    const metadata="https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/metadata";
+    const authorization_endpoint="https://fhir.epic.com/interconnect-fhir-oauth/oauth2/authorize";
+    const token_endpoint="https://fhir.epic.com/interconnect-fhir-oauth/oauth2/token";
+   
+    //const metadata="https://icinstancestg.dha.gov.ae/Interconnect-TST-FHIR/api/FHIR/R4/metadata";
+    //const authorization_endpoint="https://icinstancestg.dha.gov.ae/Interconnect-TST-FHIR/oauth2/authorize";
+    //const token_endpoint="https://icinstancestg.dha.gov.ae/Interconnect-TST-FHIR/oauth2/token";
+		//
     const urlParams = new URLSearchParams(window.location.search);
     const launch = urlParams.get('launch');
     const iss = urlParams.get('iss');
-    const metadata="https://icinstancestg.dha.gov.ae/Interconnect-TST-FHIR/api/FHIR/R4/metadata";
-    const authorization_endpoint="https://icinstancestg.dha.gov.ae/Interconnect-TST-FHIR/oauth2/authorize";
-    const token_endpoint="https://icinstancestg.dha.gov.ae/Interconnect-TST-FHIR/oauth2/token";
-    const clientId="e405cbb8-1214-4c4c-9584-c0e5335c13ff";
+   	const clientId="cab41572-4d78-4b91-9149-7fb6789beea2";//MyApp
+    	//const clientId="e405cbb8-1214-4c4c-9584-c0e5335c13ff";
     //step 1: authorize
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -54,7 +60,7 @@ console.log('iss',iss);
 FHIR.oauth2.authorize({
   'response_type':'code',
 'client_id': clientId,
-'redirect_uri': encodeURI("https://mmohsin1.github.io/epic/app"),
+'redirect_uri': encodeURI("https://mmohsin1.github.io/epiclocal/app"),
 'scope':'launch',
 'launch':launch,
 'aud':iss,
